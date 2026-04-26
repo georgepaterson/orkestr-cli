@@ -32,7 +32,10 @@ export interface RunWorkflowInput {
   createdAt: string;
 }
 
-async function loadWorkflowDefinition(repoRoot: string, workflowName: string): Promise<WorkflowDefinition> {
+async function loadWorkflowDefinition(
+  repoRoot: string,
+  workflowName: string,
+): Promise<WorkflowDefinition> {
   const workflowPath = path.join(getOrkestrDir(repoRoot), "workflows", `${workflowName}.yml`);
   if (!(await fs.pathExists(workflowPath))) {
     throw new OrkestrCliError(`Workflow \`${workflowName}\` was not found at ${workflowPath}.`);
@@ -45,7 +48,9 @@ async function loadWorkflowDefinition(repoRoot: string, workflowName: string): P
 
   const typed = workflow as Partial<WorkflowDefinition>;
   if (typeof typed.name !== "string" || !Array.isArray(typed.steps)) {
-    throw new OrkestrCliError(`Malformed workflow file at ${workflowPath}. Expected \`name\` and \`steps\`.`);
+    throw new OrkestrCliError(
+      `Malformed workflow file at ${workflowPath}. Expected \`name\` and \`steps\`.`,
+    );
   }
 
   for (const step of typed.steps) {
@@ -82,7 +87,9 @@ export async function runWorkflow(input: RunWorkflowInput): Promise<WorkflowRun>
   for (const step of workflow.steps) {
     const promptPath = path.join(getOrkestrDir(input.repoRoot), step.prompt);
     if (!(await fs.pathExists(promptPath))) {
-      throw new OrkestrCliError(`Prompt template for step \`${step.name}\` not found: ${promptPath}`);
+      throw new OrkestrCliError(
+        `Prompt template for step \`${step.name}\` not found: ${promptPath}`,
+      );
     }
 
     const template = await readTextFile(promptPath);

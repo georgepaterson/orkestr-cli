@@ -75,7 +75,10 @@ ${sections.nextSteps}
 `;
 }
 
-export async function generateHandoverCommand(runId: string, repoRoot: string = process.cwd()): Promise<void> {
+export async function generateHandoverCommand(
+  runId: string,
+  repoRoot: string = process.cwd(),
+): Promise<void> {
   await ensureOrkestrExists(repoRoot);
 
   const run = await loadWorkflowRun(repoRoot, runId);
@@ -101,7 +104,12 @@ export async function generateHandoverCommand(runId: string, repoRoot: string = 
     prompt,
   });
 
-  const entry = formatHandoverEntry(task.title, run.id, parseHandoverOutput(providerOutput), new Date().toISOString());
+  const entry = formatHandoverEntry(
+    task.title,
+    run.id,
+    parseHandoverOutput(providerOutput),
+    new Date().toISOString(),
+  );
   const handoversPath = path.join(getMemoryDir(repoRoot), "handovers.md");
   const existingContents = await readTextFile(handoversPath, { optional: true, defaultValue: "" });
   const separator = existingContents.trim().length > 0 ? "\n\n" : "";

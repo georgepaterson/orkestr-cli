@@ -97,9 +97,18 @@ async function readMemory(repoRoot: string): Promise<ContextPack["memory"]> {
   const memoryDir = getMemoryDir(repoRoot);
 
   return {
-    decisions: await readTextFile(path.join(memoryDir, "decisions.md"), { optional: true, defaultValue: "" }),
-    handovers: await readTextFile(path.join(memoryDir, "handovers.md"), { optional: true, defaultValue: "" }),
-    patterns: await readTextFile(path.join(memoryDir, "patterns.md"), { optional: true, defaultValue: "" }),
+    decisions: await readTextFile(path.join(memoryDir, "decisions.md"), {
+      optional: true,
+      defaultValue: "",
+    }),
+    handovers: await readTextFile(path.join(memoryDir, "handovers.md"), {
+      optional: true,
+      defaultValue: "",
+    }),
+    patterns: await readTextFile(path.join(memoryDir, "patterns.md"), {
+      optional: true,
+      defaultValue: "",
+    }),
   };
 }
 
@@ -109,7 +118,9 @@ export async function buildContextPack(input: BuildContextPackInput): Promise<Co
   const excludeMatchers = input.config.context.exclude.map(compileGlobPattern);
 
   const selectedFiles = allFiles
-    .filter((filePath) => matchesAny(filePath, includeMatchers) && !matchesAny(filePath, excludeMatchers))
+    .filter(
+      (filePath) => matchesAny(filePath, includeMatchers) && !matchesAny(filePath, excludeMatchers),
+    )
     .sort();
 
   const fileEntries: ContextFileEntry[] = [];

@@ -158,7 +158,10 @@ export async function runInitCommand(repoRoot: string = process.cwd()): Promise<
   await fs.ensureDir(getRunsDir(repoRoot));
 
   await writeTextFile(path.join(orkestrDir, "config.yml"), STARTER_CONFIG);
-  await writeTextFile(path.join(getWorkflowsDir(repoRoot), "feature.yml"), STARTER_FEATURE_WORKFLOW);
+  await writeTextFile(
+    path.join(getWorkflowsDir(repoRoot), "feature.yml"),
+    STARTER_FEATURE_WORKFLOW,
+  );
   await writeTextFile(path.join(getEvalsDir(repoRoot), "api-quality.yml"), STARTER_EVAL);
   await writeTextFile(path.join(getMemoryDir(repoRoot), "decisions.md"), STARTER_DECISIONS);
   await writeTextFile(path.join(getMemoryDir(repoRoot), "handovers.md"), STARTER_HANDOVERS);

@@ -47,7 +47,8 @@ function createHandoverOutput(request: GenerateRequest): string {
 export class MockProvider implements ModelProvider {
   async generate(request: GenerateRequest): Promise<string> {
     const isHandoverPrompt =
-      request.stepName === "handover" || request.prompt.toLowerCase().includes("generate a handover");
+      request.stepName === "handover" ||
+      request.prompt.toLowerCase().includes("generate a handover");
 
     if (isHandoverPrompt) {
       return createHandoverOutput(request);

@@ -13,8 +13,11 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "dev": "tsx src/index.ts"
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.json",
+    "dev": "tsx src/index.ts",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "engines": {
     "node": ">=18.0.0"
@@ -26,9 +29,13 @@
     "yaml": "^2.6.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.10.1",
+    "eslint": "^10.2.1",
+    "prettier": "^3.8.3",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.59.0"
   }
 }

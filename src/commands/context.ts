@@ -6,7 +6,10 @@ import { saveContextPack } from "../core/run-store.js";
 import { loadTaskById } from "./task.js";
 import { createEntityId } from "../utils/paths.js";
 
-export async function buildContextCommand(taskId: string, repoRoot: string = process.cwd()): Promise<string> {
+export async function buildContextCommand(
+  taskId: string,
+  repoRoot: string = process.cwd(),
+): Promise<string> {
   const task = await loadTaskById(repoRoot, taskId);
   const config = await loadConfig(repoRoot);
   const createdAt = new Date().toISOString();

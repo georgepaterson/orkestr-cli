@@ -36,7 +36,11 @@ export async function loadConfig(repoRoot: string): Promise<OrkestrConfig> {
   }
 
   const project = (config as Record<string, unknown>).project;
-  if (typeof project !== "object" || project === null || typeof (project as { name?: unknown }).name !== "string") {
+  if (
+    typeof project !== "object" ||
+    project === null ||
+    typeof (project as { name?: unknown }).name !== "string"
+  ) {
     throw new OrkestrCliError("Invalid config field `project.name`. Expected a string.");
   }
 

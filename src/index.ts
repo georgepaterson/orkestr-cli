@@ -20,7 +20,10 @@ async function runAction(action: () => Promise<void>): Promise<void> {
 }
 
 const program = new Command();
-program.name("orkestr").description("Repo-native AI workflow, memory, and evaluation CLI.").version("0.1.0");
+program
+  .name("orkestr")
+  .description("Repo-native AI workflow, memory, and evaluation CLI.")
+  .version("0.1.0");
 
 program
   .command("init")
@@ -42,7 +45,9 @@ contextCommand
   .command("build")
   .description("Build a context pack for a task.")
   .requiredOption("--task <taskId>", "Task ID")
-  .action((options: { task: string }) => runAction(() => buildContextCommand(options.task).then(() => undefined)));
+  .action((options: { task: string }) =>
+    runAction(() => buildContextCommand(options.task).then(() => undefined)),
+  );
 
 const workflowCommand = program.command("workflow").description("Workflow operations.");
 workflowCommand

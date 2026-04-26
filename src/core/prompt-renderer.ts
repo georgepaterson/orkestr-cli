@@ -5,7 +5,11 @@ function getValueByPath(source: Record<string, unknown>, pathExpression: string)
   let current: unknown = source;
 
   for (const part of parts) {
-    if (typeof current !== "object" || current === null || !(part in (current as Record<string, unknown>))) {
+    if (
+      typeof current !== "object" ||
+      current === null ||
+      !(part in (current as Record<string, unknown>))
+    ) {
       return "";
     }
 
