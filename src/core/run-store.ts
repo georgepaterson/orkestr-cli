@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 
 import type { ContextPack } from "./context-builder.js";
-import { OrkestraCliError, readJsonFile, writeJsonFile } from "../utils/fs.js";
+import { OrkestrCliError, readJsonFile, writeJsonFile } from "../utils/fs.js";
 import { getRunFilePath, getRunsDir } from "../utils/paths.js";
 
 export interface WorkflowRunStep {
@@ -34,12 +34,12 @@ export async function saveWorkflowRun(repoRoot: string, workflowRun: WorkflowRun
 export async function loadWorkflowRun(repoRoot: string, runId: string): Promise<WorkflowRun> {
   const runPath = getRunFilePath(repoRoot, runId);
   if (!(await fs.pathExists(runPath))) {
-    throw new OrkestraCliError(`Missing run file for \`${runId}\` at ${runPath}.`);
+    throw new OrkestrCliError(`Missing run file for \`${runId}\` at ${runPath}.`);
   }
 
   const run = await readJsonFile<unknown>(runPath);
   if (typeof run !== "object" || run === null) {
-    throw new OrkestraCliError(`Invalid run payload in ${runPath}.`);
+    throw new OrkestrCliError(`Invalid run payload in ${runPath}.`);
   }
 
   const typed = run as Partial<WorkflowRun>;
@@ -50,7 +50,7 @@ export async function loadWorkflowRun(repoRoot: string, runId: string): Promise<
     typeof typed.createdAt !== "string" ||
     !Array.isArray(typed.steps)
   ) {
-    throw new OrkestraCliError(`Malformed run file in ${runPath}.`);
+    throw new OrkestrCliError(`Malformed run file in ${runPath}.`);
   }
 
   return typed as WorkflowRun;

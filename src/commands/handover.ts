@@ -5,7 +5,7 @@ import { loadConfig } from "../core/config.js";
 import { renderPrompt } from "../core/prompt-renderer.js";
 import { loadWorkflowRun } from "../core/run-store.js";
 import { MockProvider } from "../models/mock-provider.js";
-import { appendTextFile, ensureOrkestraExists, readTextFile } from "../utils/fs.js";
+import { appendTextFile, ensureOrkestrExists, readTextFile } from "../utils/fs.js";
 import { getMemoryDir, getPromptsDir } from "../utils/paths.js";
 import { loadTaskById } from "./task.js";
 
@@ -76,7 +76,7 @@ ${sections.nextSteps}
 }
 
 export async function generateHandoverCommand(runId: string, repoRoot: string = process.cwd()): Promise<void> {
-  await ensureOrkestraExists(repoRoot);
+  await ensureOrkestrExists(repoRoot);
 
   const run = await loadWorkflowRun(repoRoot, runId);
   const task = await loadTaskById(repoRoot, run.taskId);

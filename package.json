@@ -1,11 +1,11 @@
 {
-  "name": "@orkestra/cli",
+  "name": "@orkestr/cli",
   "version": "0.1.0",
   "description": "Repo-native AI workflow, memory, and evaluation CLI scaffold.",
   "type": "module",
   "license": "AGPL-3.0-or-later",
   "bin": {
-    "orkestra": "./dist/index.js"
+    "orkestr": "./dist/index.js"
   },
   "files": [
     "dist",

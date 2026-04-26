@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import chalk from "chalk";
 
 import type { TaskRecord } from "../core/context-builder.js";
-import { OrkestraCliError, ensureOrkestraExists, readYamlFile, writeTextFile } from "../utils/fs.js";
+import { OrkestrCliError, ensureOrkestrExists, readYamlFile, writeTextFile } from "../utils/fs.js";
 import { createEntityId, getTaskCandidates, getTasksDir } from "../utils/paths.js";
 
 function formatDescriptionBlock(description: string): string {
@@ -16,7 +16,7 @@ function formatDescriptionBlock(description: string): string {
 
 function validateTask(task: unknown, source: string): TaskRecord {
   if (typeof task !== "object" || task === null) {
-    throw new OrkestraCliError(`Malformed task file at ${source}.`);
+    throw new OrkestrCliError(`Malformed task file at ${source}.`);
   }
 
   const typed = task as Partial<TaskRecord>;
@@ -27,7 +27,7 @@ function validateTask(task: unknown, source: string): TaskRecord {
     typeof typed.createdAt !== "string" ||
     typeof typed.description !== "string"
   ) {
-    throw new OrkestraCliError(
+    throw new OrkestrCliError(
       `Malformed task file at ${source}. Expected id, title, status, createdAt, and description fields.`,
     );
   }
@@ -40,7 +40,7 @@ export async function createTaskCommand(
   description: string,
   repoRoot: string = process.cwd(),
 ): Promise<TaskRecord> {
-  await ensureOrkestraExists(repoRoot);
+  await ensureOrkestrExists(repoRoot);
 
   const id = createEntityId("task");
   const createdAt = new Date().toISOString();
@@ -69,7 +69,7 @@ ${formatDescriptionBlock(description)}
 }
 
 export async function loadTaskById(repoRoot: string, taskId: string): Promise<TaskRecord> {
-  await ensureOrkestraExists(repoRoot);
+  await ensureOrkestrExists(repoRoot);
 
   const candidates = getTaskCandidates(repoRoot, taskId);
   const taskPath = (
@@ -82,8 +82,8 @@ export async function loadTaskById(repoRoot: string, taskId: string): Promise<Ta
   ).find((candidate) => candidate.exists)?.candidate;
 
   if (!taskPath) {
-    throw new OrkestraCliError(
-      `Task \`${taskId}\` not found in .orkestra/tasks. Expected one of: ${candidates.join(", ")}`,
+    throw new OrkestrCliError(
+      `Task \`${taskId}\` not found in .orkestr/tasks. Expected one of: ${candidates.join(", ")}`,
     );
   }
 

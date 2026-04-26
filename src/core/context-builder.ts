@@ -1,7 +1,7 @@
 import path from "node:path";
 import fs from "fs-extra";
 
-import type { OrkestraConfig } from "./config.js";
+import type { OrkestrConfig } from "./config.js";
 import { readTextFile } from "../utils/fs.js";
 import { getMemoryDir, toPosixPath } from "../utils/paths.js";
 
@@ -35,7 +35,7 @@ export interface ContextPack {
 export interface BuildContextPackInput {
   repoRoot: string;
   task: TaskRecord;
-  config: OrkestraConfig;
+  config: OrkestrConfig;
   contextId: string;
   createdAt: string;
 }

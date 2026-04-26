@@ -6,7 +6,7 @@ import { writeTextFile } from "../utils/fs.js";
 import {
   getEvalsDir,
   getMemoryDir,
-  getOrkestraDir,
+  getOrkestrDir,
   getPromptsDir,
   getRunsDir,
   getTasksDir,
@@ -30,7 +30,7 @@ context:
     - node_modules/**
     - dist/**
     - .git/**
-    - .orkestra/runs/**
+    - .orkestr/runs/**
 `;
 
 const STARTER_FEATURE_WORKFLOW = `name: feature
@@ -143,13 +143,13 @@ Capture reusable implementation patterns and conventions here.
 `;
 
 export async function runInitCommand(repoRoot: string = process.cwd()): Promise<void> {
-  const orkestraDir = getOrkestraDir(repoRoot);
-  if (await fs.pathExists(orkestraDir)) {
-    console.log(chalk.yellow(`Skipped initialization: ${orkestraDir} already exists.`));
+  const orkestrDir = getOrkestrDir(repoRoot);
+  if (await fs.pathExists(orkestrDir)) {
+    console.log(chalk.yellow(`Skipped initialization: ${orkestrDir} already exists.`));
     return;
   }
 
-  await fs.ensureDir(orkestraDir);
+  await fs.ensureDir(orkestrDir);
   await fs.ensureDir(getWorkflowsDir(repoRoot));
   await fs.ensureDir(getTasksDir(repoRoot));
   await fs.ensureDir(getEvalsDir(repoRoot));
@@ -157,7 +157,7 @@ export async function runInitCommand(repoRoot: string = process.cwd()): Promise<
   await fs.ensureDir(getPromptsDir(repoRoot));
   await fs.ensureDir(getRunsDir(repoRoot));
 
-  await writeTextFile(path.join(orkestraDir, "config.yml"), STARTER_CONFIG);
+  await writeTextFile(path.join(orkestrDir, "config.yml"), STARTER_CONFIG);
   await writeTextFile(path.join(getWorkflowsDir(repoRoot), "feature.yml"), STARTER_FEATURE_WORKFLOW);
   await writeTextFile(path.join(getEvalsDir(repoRoot), "api-quality.yml"), STARTER_EVAL);
   await writeTextFile(path.join(getMemoryDir(repoRoot), "decisions.md"), STARTER_DECISIONS);
@@ -168,5 +168,5 @@ export async function runInitCommand(repoRoot: string = process.cwd()): Promise<
   await writeTextFile(path.join(getPromptsDir(repoRoot), "review.md"), REVIEW_PROMPT);
   await writeTextFile(path.join(getPromptsDir(repoRoot), "handover.md"), HANDOVER_PROMPT);
 
-  console.log(chalk.green(`Initialized Orkestra in ${orkestraDir}`));
+  console.log(chalk.green(`Initialized Orkestr in ${orkestrDir}`));
 }

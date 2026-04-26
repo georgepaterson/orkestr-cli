@@ -1,9 +1,9 @@
 import fs from "fs-extra";
 
-import { OrkestraCliError, ensureOrkestraExists, readYamlFile } from "../utils/fs.js";
+import { OrkestrCliError, ensureOrkestrExists, readYamlFile } from "../utils/fs.js";
 import { getConfigPath } from "../utils/paths.js";
 
-export interface OrkestraConfig {
+export interface OrkestrConfig {
   project: {
     name: string;
   };
@@ -16,43 +16,43 @@ export interface OrkestraConfig {
 
 function assertStringArray(value: unknown, fieldName: string): string[] {
   if (!Array.isArray(value) || value.some((entry) => typeof entry !== "string")) {
-    throw new OrkestraCliError(`Invalid config field \`${fieldName}\`. Expected a list of strings.`);
+    throw new OrkestrCliError(`Invalid config field \`${fieldName}\`. Expected a list of strings.`);
   }
 
   return value;
 }
 
-export async function loadConfig(repoRoot: string): Promise<OrkestraConfig> {
-  await ensureOrkestraExists(repoRoot);
+export async function loadConfig(repoRoot: string): Promise<OrkestrConfig> {
+  await ensureOrkestrExists(repoRoot);
 
   const configPath = getConfigPath(repoRoot);
   if (!(await fs.pathExists(configPath))) {
-    throw new OrkestraCliError(`Missing config file at ${configPath}. Run \`orkestra init\` first.`);
+    throw new OrkestrCliError(`Missing config file at ${configPath}. Run \`orkestr init\` first.`);
   }
 
   const config = await readYamlFile<unknown>(configPath);
   if (typeof config !== "object" || config === null) {
-    throw new OrkestraCliError("Invalid config. Expected a YAML object in .orkestra/config.yml.");
+    throw new OrkestrCliError("Invalid config. Expected a YAML object in .orkestr/config.yml.");
   }
 
   const project = (config as Record<string, unknown>).project;
   if (typeof project !== "object" || project === null || typeof (project as { name?: unknown }).name !== "string") {
-    throw new OrkestraCliError("Invalid config field `project.name`. Expected a string.");
+    throw new OrkestrCliError("Invalid config field `project.name`. Expected a string.");
   }
 
   const models = (config as Record<string, unknown>).models;
   if (typeof models !== "object" || models === null) {
-    throw new OrkestraCliError("Invalid config field `models`. Expected a map of model aliases.");
+    throw new OrkestrCliError("Invalid config field `models`. Expected a map of model aliases.");
   }
 
   const modelEntries = Object.entries(models as Record<string, unknown>);
   if (modelEntries.length === 0 || modelEntries.some(([, value]) => typeof value !== "string")) {
-    throw new OrkestraCliError("Invalid config field `models`. Expected key/value string pairs.");
+    throw new OrkestrCliError("Invalid config field `models`. Expected key/value string pairs.");
   }
 
   const context = (config as Record<string, unknown>).context;
   if (typeof context !== "object" || context === null) {
-    throw new OrkestraCliError("Invalid config field `context`. Expected include/exclude lists.");
+    throw new OrkestrCliError("Invalid config field `context`. Expected include/exclude lists.");
   }
 
   return {

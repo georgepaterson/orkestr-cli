@@ -20,11 +20,11 @@ async function runAction(action: () => Promise<void>): Promise<void> {
 }
 
 const program = new Command();
-program.name("orkestra").description("Repo-native AI workflow, memory, and evaluation CLI.").version("0.1.0");
+program.name("orkestr").description("Repo-native AI workflow, memory, and evaluation CLI.").version("0.1.0");
 
 program
   .command("init")
-  .description("Initialize Orkestra in the current repository.")
+  .description("Initialize Orkestr in the current repository.")
   .action(() => runAction(() => runInitCommand()));
 
 const taskCommand = program.command("task").description("Task operations.");

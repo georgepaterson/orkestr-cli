@@ -2,20 +2,20 @@ import path from "node:path";
 import fs from "fs-extra";
 import YAML from "yaml";
 
-import { ORKESTRA_DIR_NAME, getOrkestraDir } from "./paths.js";
+import { ORKESTR_DIR_NAME, getOrkestrDir } from "./paths.js";
 
-export class OrkestraCliError extends Error {
+export class OrkestrCliError extends Error {
   constructor(message: string, options?: { cause?: unknown }) {
     super(message, options);
-    this.name = "OrkestraCliError";
+    this.name = "OrkestrCliError";
   }
 }
 
-export async function ensureOrkestraExists(repoRoot: string): Promise<void> {
-  const orkestraDir = getOrkestraDir(repoRoot);
-  if (!(await fs.pathExists(orkestraDir))) {
-    throw new OrkestraCliError(
-      `Missing ${ORKESTRA_DIR_NAME}/ in ${repoRoot}. Run \`orkestra init\` first.`,
+export async function ensureOrkestrExists(repoRoot: string): Promise<void> {
+  const orkestrDir = getOrkestrDir(repoRoot);
+  if (!(await fs.pathExists(orkestrDir))) {
+    throw new OrkestrCliError(
+      `Missing ${ORKESTR_DIR_NAME}/ in ${repoRoot}. Run \`orkestr init\` first.`,
     );
   }
 }
@@ -29,7 +29,7 @@ export async function readTextFile(
       return options.defaultValue ?? "";
     }
 
-    throw new OrkestraCliError(`Missing file: ${filePath}`);
+    throw new OrkestrCliError(`Missing file: ${filePath}`);
   }
 
   return fs.readFile(filePath, "utf8");
@@ -52,11 +52,11 @@ export async function readYamlFile<T>(filePath: string): Promise<T> {
   try {
     document = YAML.parseDocument(raw);
   } catch (error) {
-    throw new OrkestraCliError(`Malformed YAML in ${filePath}.`, { cause: error });
+    throw new OrkestrCliError(`Malformed YAML in ${filePath}.`, { cause: error });
   }
 
   if (document.errors.length > 0) {
-    throw new OrkestraCliError(`Malformed YAML in ${filePath}: ${document.errors[0]?.message}`);
+    throw new OrkestrCliError(`Malformed YAML in ${filePath}: ${document.errors[0]?.message}`);
   }
 
   return document.toJS() as T;
@@ -68,13 +68,13 @@ export async function writeYamlFile(filePath: string, value: unknown): Promise<v
 
 export async function readJsonFile<T>(filePath: string): Promise<T> {
   if (!(await fs.pathExists(filePath))) {
-    throw new OrkestraCliError(`Missing file: ${filePath}`);
+    throw new OrkestrCliError(`Missing file: ${filePath}`);
   }
 
   try {
     return await fs.readJson(filePath);
   } catch (error) {
-    throw new OrkestraCliError(`Malformed JSON in ${filePath}.`, { cause: error });
+    throw new OrkestrCliError(`Malformed JSON in ${filePath}.`, { cause: error });
   }
 }
 
@@ -84,7 +84,7 @@ export async function writeJsonFile(filePath: string, value: unknown): Promise<v
 }
 
 export function formatError(error: unknown): string {
-  if (error instanceof OrkestraCliError) {
+  if (error instanceof OrkestrCliError) {
     return error.message;
   }
 

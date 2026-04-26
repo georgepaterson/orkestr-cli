@@ -1,8 +1,8 @@
-# Orkestra CLI
+# Orkestr CLI
 
-Orkestra is a repo-native workflow, memory, and evaluation layer for AI-assisted software development.
+Orkestr is a repo-native workflow, memory, and evaluation layer for AI-assisted software development.
 
-This package is the local-first MVP CLI (`@orkestra/cli`).
+This package is the local-first MVP CLI (`@orkestr/cli`).
 
 ## MVP features
 
@@ -26,11 +26,11 @@ This package is the local-first MVP CLI (`@orkestra/cli`).
 
 ## Commands
 
-- `orkestra init`
-- `orkestra task create "<title>" --description "<description>"`
-- `orkestra context build --task <task-id>`
-- `orkestra workflow run feature --task <task-id>`
-- `orkestra handover generate --run <run-id>`
+- `orkestr init`
+- `orkestr task create "<title>" --description "<description>"`
+- `orkestr context build --task <task-id>`
+- `orkestr workflow run feature --task <task-id>`
+- `orkestr handover generate --run <run-id>`
 
 ## Development
 

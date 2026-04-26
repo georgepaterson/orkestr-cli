@@ -2,12 +2,12 @@ import path from "node:path";
 import fs from "fs-extra";
 
 import type { ContextPack, TaskRecord } from "./context-builder.js";
-import type { OrkestraConfig } from "./config.js";
+import type { OrkestrConfig } from "./config.js";
 import type { ModelProvider } from "../models/provider.js";
 import { renderPrompt } from "./prompt-renderer.js";
 import type { WorkflowRun, WorkflowRunStep } from "./run-store.js";
-import { OrkestraCliError, readTextFile, readYamlFile } from "../utils/fs.js";
-import { getOrkestraDir } from "../utils/paths.js";
+import { OrkestrCliError, readTextFile, readYamlFile } from "../utils/fs.js";
+import { getOrkestrDir } from "../utils/paths.js";
 
 interface WorkflowStepDefinition {
   name: string;
@@ -26,26 +26,26 @@ export interface RunWorkflowInput {
   workflowName: string;
   task: TaskRecord;
   contextPack: ContextPack;
-  config: OrkestraConfig;
+  config: OrkestrConfig;
   provider: ModelProvider;
   runId: string;
   createdAt: string;
 }
 
 async function loadWorkflowDefinition(repoRoot: string, workflowName: string): Promise<WorkflowDefinition> {
-  const workflowPath = path.join(getOrkestraDir(repoRoot), "workflows", `${workflowName}.yml`);
+  const workflowPath = path.join(getOrkestrDir(repoRoot), "workflows", `${workflowName}.yml`);
   if (!(await fs.pathExists(workflowPath))) {
-    throw new OrkestraCliError(`Workflow \`${workflowName}\` was not found at ${workflowPath}.`);
+    throw new OrkestrCliError(`Workflow \`${workflowName}\` was not found at ${workflowPath}.`);
   }
 
   const workflow = await readYamlFile<unknown>(workflowPath);
   if (typeof workflow !== "object" || workflow === null) {
-    throw new OrkestraCliError(`Invalid workflow file at ${workflowPath}.`);
+    throw new OrkestrCliError(`Invalid workflow file at ${workflowPath}.`);
   }
 
   const typed = workflow as Partial<WorkflowDefinition>;
   if (typeof typed.name !== "string" || !Array.isArray(typed.steps)) {
-    throw new OrkestraCliError(`Malformed workflow file at ${workflowPath}. Expected \`name\` and \`steps\`.`);
+    throw new OrkestrCliError(`Malformed workflow file at ${workflowPath}. Expected \`name\` and \`steps\`.`);
   }
 
   for (const step of typed.steps) {
@@ -56,7 +56,7 @@ async function loadWorkflowDefinition(repoRoot: string, workflowName: string): P
       typeof (step as Partial<WorkflowStepDefinition>).prompt !== "string" ||
       typeof (step as Partial<WorkflowStepDefinition>).model !== "string"
     ) {
-      throw new OrkestraCliError(
+      throw new OrkestrCliError(
         `Malformed workflow step in ${workflowPath}. Each step needs \`name\`, \`prompt\`, and \`model\`.`,
       );
     }
@@ -65,10 +65,10 @@ async function loadWorkflowDefinition(repoRoot: string, workflowName: string): P
   return typed as WorkflowDefinition;
 }
 
-function resolveModelAlias(config: OrkestraConfig, modelAlias: string): string {
+function resolveModelAlias(config: OrkestrConfig, modelAlias: string): string {
   const model = config.models[modelAlias];
   if (!model) {
-    throw new OrkestraCliError(`Model alias \`${modelAlias}\` is missing in .orkestra/config.yml.`);
+    throw new OrkestrCliError(`Model alias \`${modelAlias}\` is missing in .orkestr/config.yml.`);
   }
 
   return model;
@@ -80,9 +80,9 @@ export async function runWorkflow(input: RunWorkflowInput): Promise<WorkflowRun>
   const stepOutputs: WorkflowRunStep[] = [];
 
   for (const step of workflow.steps) {
-    const promptPath = path.join(getOrkestraDir(input.repoRoot), step.prompt);
+    const promptPath = path.join(getOrkestrDir(input.repoRoot), step.prompt);
     if (!(await fs.pathExists(promptPath))) {
-      throw new OrkestraCliError(`Prompt template for step \`${step.name}\` not found: ${promptPath}`);
+      throw new OrkestrCliError(`Prompt template for step \`${step.name}\` not found: ${promptPath}`);
     }
 
     const template = await readTextFile(promptPath);

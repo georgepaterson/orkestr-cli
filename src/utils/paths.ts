@@ -1,37 +1,37 @@
 import path from "node:path";
 
-export const ORKESTRA_DIR_NAME = ".orkestra";
+export const ORKESTR_DIR_NAME = ".orkestr";
 
-export function getOrkestraDir(repoRoot: string): string {
-  return path.join(repoRoot, ORKESTRA_DIR_NAME);
+export function getOrkestrDir(repoRoot: string): string {
+  return path.join(repoRoot, ORKESTR_DIR_NAME);
 }
 
 export function getConfigPath(repoRoot: string): string {
-  return path.join(getOrkestraDir(repoRoot), "config.yml");
+  return path.join(getOrkestrDir(repoRoot), "config.yml");
 }
 
 export function getWorkflowsDir(repoRoot: string): string {
-  return path.join(getOrkestraDir(repoRoot), "workflows");
+  return path.join(getOrkestrDir(repoRoot), "workflows");
 }
 
 export function getTasksDir(repoRoot: string): string {
-  return path.join(getOrkestraDir(repoRoot), "tasks");
+  return path.join(getOrkestrDir(repoRoot), "tasks");
 }
 
 export function getEvalsDir(repoRoot: string): string {
-  return path.join(getOrkestraDir(repoRoot), "evals");
+  return path.join(getOrkestrDir(repoRoot), "evals");
 }
 
 export function getMemoryDir(repoRoot: string): string {
-  return path.join(getOrkestraDir(repoRoot), "memory");
+  return path.join(getOrkestrDir(repoRoot), "memory");
 }
 
 export function getPromptsDir(repoRoot: string): string {
-  return path.join(getOrkestraDir(repoRoot), "prompts");
+  return path.join(getOrkestrDir(repoRoot), "prompts");
 }
 
 export function getRunsDir(repoRoot: string): string {
-  return path.join(getOrkestraDir(repoRoot), "runs");
+  return path.join(getOrkestrDir(repoRoot), "runs");
 }
 
 export function createTimestamp(date: Date = new Date()): string {
