@@ -16,10 +16,24 @@ import {
 const STARTER_CONFIG = `project:
   name: example-project
 
+providers:
+  openai:
+    apiKeyEnv: OPENAI_API_KEY
+  anthropic:
+    apiKeyEnv: ANTHROPIC_API_KEY
+
 models:
-  default: mock:default
-  planning: mock:planning
-  review: mock:review
+  default:
+    provider: openai
+    model: gpt-4.1-mini
+  planning:
+    provider: anthropic
+    model: claude-3-5-sonnet-latest
+    maxTokens: 2048
+  review:
+    provider: anthropic
+    model: claude-3-5-sonnet-latest
+    maxTokens: 2048
 
 context:
   include:
@@ -142,6 +156,10 @@ const STARTER_PATTERNS = `# Patterns
 Capture reusable implementation patterns and conventions here.
 `;
 
+const STARTER_DOT_ENV_EXAMPLE = `OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+`;
+
 export async function runInitCommand(repoRoot: string = process.cwd()): Promise<void> {
   const orkestrDir = getOrkestrDir(repoRoot);
   if (await fs.pathExists(orkestrDir)) {
@@ -170,6 +188,11 @@ export async function runInitCommand(repoRoot: string = process.cwd()): Promise<
   await writeTextFile(path.join(getPromptsDir(repoRoot), "implement.md"), IMPLEMENT_PROMPT);
   await writeTextFile(path.join(getPromptsDir(repoRoot), "review.md"), REVIEW_PROMPT);
   await writeTextFile(path.join(getPromptsDir(repoRoot), "handover.md"), HANDOVER_PROMPT);
+
+  const dotEnvExamplePath = path.join(repoRoot, ".env.example");
+  if (!(await fs.pathExists(dotEnvExamplePath))) {
+    await writeTextFile(dotEnvExamplePath, STARTER_DOT_ENV_EXAMPLE);
+  }
 
   console.log(chalk.green(`Initialized Orkestr in ${orkestrDir}`));
 }

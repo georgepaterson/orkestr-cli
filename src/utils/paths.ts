@@ -59,3 +59,11 @@ export function getRunFilePath(repoRoot: string, runId: string): string {
   const fileName = runId.endsWith(".json") ? runId : `${runId}.json`;
   return path.join(getRunsDir(repoRoot), fileName);
 }
+
+export function getRunArtifactsDir(repoRoot: string, runId: string): string {
+  return path.join(getRunsDir(repoRoot), runId);
+}
+
+export function getRunTranscriptPath(repoRoot: string, runId: string): string {
+  return path.join(getRunArtifactsDir(repoRoot, runId), "exchanges.jsonl");
+}

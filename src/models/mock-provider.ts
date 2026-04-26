@@ -12,6 +12,7 @@ function createWorkflowOutput(request: GenerateRequest): string {
 
   return [
     `MockProvider output`,
+    `provider: ${request.provider}`,
     `model: ${request.model}`,
     `step: ${step}`,
     `promptDigest: ${hash}`,
@@ -32,6 +33,7 @@ function createHandoverOutput(request: GenerateRequest): string {
   return [
     "Summary:",
     `- Completed a deterministic workflow handover draft (digest: ${hash}).`,
+    `- Provider used: ${request.provider}.`,
     "- Workflow outputs were captured and summarized for follow-up.",
     "",
     "Decisions:",

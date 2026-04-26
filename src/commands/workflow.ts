@@ -4,7 +4,7 @@ import { loadConfig } from "../core/config.js";
 import { buildContextPack } from "../core/context-builder.js";
 import { runWorkflow } from "../core/workflow-runner.js";
 import { saveWorkflowRun } from "../core/run-store.js";
-import { MockProvider } from "../models/mock-provider.js";
+import { createProvider } from "../models/provider-factory.js";
 import { createEntityId } from "../utils/paths.js";
 import { loadTaskById } from "./task.js";
 
@@ -30,7 +30,7 @@ export async function runWorkflowCommand(
     task,
     contextPack,
     config,
-    provider: new MockProvider(),
+    provider: createProvider(config),
     runId: createEntityId("run"),
     createdAt: new Date().toISOString(),
   });

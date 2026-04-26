@@ -37,5 +37,6 @@ describe("runInitCommand", () => {
     await expect(fs.stat(path.join(orkestrDir, "prompts", "plan.md"))).resolves.toBeDefined();
     await expect(fs.stat(path.join(orkestrDir, "memory", "handovers.md"))).resolves.toBeDefined();
     await expect(fs.stat(path.join(orkestrDir, "evals", "api-quality.yml"))).resolves.toBeDefined();
+    await expect(fs.stat(path.join(tempRepoRoot, ".env.example"))).resolves.toBeDefined();
   });
 });

@@ -3,9 +3,9 @@ import chalk from "chalk";
 
 import { loadConfig } from "../core/config.js";
 import { renderPrompt } from "../core/prompt-renderer.js";
-import { loadWorkflowRun } from "../core/run-store.js";
-import { MockProvider } from "../models/mock-provider.js";
-import { appendTextFile, ensureOrkestrExists, readTextFile } from "../utils/fs.js";
+import { appendRunExchange, loadWorkflowRun } from "../core/run-store.js";
+import { createProvider } from "../models/provider-factory.js";
+import { OrkestrCliError, appendTextFile, ensureOrkestrExists, readTextFile } from "../utils/fs.js";
 import { getMemoryDir, getPromptsDir } from "../utils/paths.js";
 import { loadTaskById } from "./task.js";
 
@@ -96,12 +96,33 @@ export async function generateHandoverCommand(
     outputs,
   });
 
-  const provider = new MockProvider();
-  const modelAlias = config.models.default ?? "mock:default";
+  const modelAlias = "default";
+  const modelConfig = config.models[modelAlias];
+  if (!modelConfig) {
+    throw new OrkestrCliError(
+      "Missing model alias `default` in .orkestr/config.yml. Add a default model to generate handovers.",
+    );
+  }
+
+  const provider = createProvider(config);
   const providerOutput = await provider.generate({
-    model: modelAlias,
+    provider: modelConfig.provider,
+    model: modelConfig.model,
     stepName: "handover",
     prompt,
+    temperature: modelConfig.temperature,
+    maxTokens: modelConfig.maxTokens,
+  });
+
+  await appendRunExchange(repoRoot, run.id, {
+    createdAt: new Date().toISOString(),
+    source: "handover",
+    stepName: "handover",
+    modelAlias,
+    provider: modelConfig.provider,
+    model: modelConfig.model,
+    prompt,
+    response: providerOutput,
   });
 
   const entry = formatHandoverEntry(

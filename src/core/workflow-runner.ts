@@ -2,7 +2,7 @@ import path from "node:path";
 import fs from "fs-extra";
 
 import type { ContextPack, TaskRecord } from "./context-builder.js";
-import type { OrkestrConfig } from "./config.js";
+import type { ModelConfig, OrkestrConfig } from "./config.js";
 import type { ModelProvider } from "../models/provider.js";
 import { renderPrompt } from "./prompt-renderer.js";
 import type { WorkflowRun, WorkflowRunStep } from "./run-store.js";
@@ -70,7 +70,7 @@ async function loadWorkflowDefinition(
   return typed as WorkflowDefinition;
 }
 
-function resolveModelAlias(config: OrkestrConfig, modelAlias: string): string {
+function resolveModelAlias(config: OrkestrConfig, modelAlias: string): ModelConfig {
   const model = config.models[modelAlias];
   if (!model) {
     throw new OrkestrCliError(`Model alias \`${modelAlias}\` is missing in .orkestr/config.yml.`);
@@ -105,15 +105,21 @@ export async function runWorkflow(input: RunWorkflowInput): Promise<WorkflowRun>
       outputs: previous,
     });
 
+    const resolvedModel = resolveModelAlias(input.config, step.model);
     const output = await input.provider.generate({
-      model: resolveModelAlias(input.config, step.model),
+      provider: resolvedModel.provider,
+      model: resolvedModel.model,
       stepName: step.name,
       prompt: renderedPrompt,
+      temperature: resolvedModel.temperature,
+      maxTokens: resolvedModel.maxTokens,
     });
 
     stepOutputs.push({
       name: step.name,
-      model: step.model,
+      modelAlias: step.model,
+      provider: resolvedModel.provider,
+      model: resolvedModel.model,
       prompt: renderedPrompt,
       output,
     });
