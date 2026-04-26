@@ -17,7 +17,10 @@
     "build": "npm run clean && tsc -p tsconfig.json",
     "dev": "tsx src/index.ts",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --runInBand --coverage"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -31,9 +34,12 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/fs-extra": "^11.0.4",
+    "@types/jest": "^30.0.0",
     "@types/node": "^22.10.1",
     "eslint": "^10.2.1",
+    "jest": "^30.3.0",
     "prettier": "^3.8.3",
+    "ts-jest": "^29.4.9",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.59.0"
