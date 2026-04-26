@@ -7,6 +7,7 @@ const config: Config = {
   testMatch: ["**/*.test.ts"],
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
+    "^chalk$": "<rootDir>/tests/mocks/chalk.ts",
   },
   collectCoverageFrom: ["src/**/*.ts", "!src/**/*.d.ts"],
 };
